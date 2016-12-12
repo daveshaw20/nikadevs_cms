@@ -1,0 +1,21 @@
+/**
+ * Place your custom styles here.
+ */
+
+ul{
+    list-style: none;
+}
+
+li{
+    display: inline;
+}
+
+.menu-custom-dropdown-wrapper,.menu-custom-child-wrapper{
+    display: inline-block;
+}
+.menu-custom-child-wrapper ul{
+    display: none;
+}
+.menu-custom-child-wrapper ul.menu-active{
+    display: block;
+}

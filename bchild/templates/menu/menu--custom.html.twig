@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ *
+ * @ingroup templates
+ */
+#}
+
+{{ cu_url }}
+
+<div class="menu-custom-wrapper">
+    <div class="menu-custom-dropdown-wrapper">
+        <select class="menu-custom-dropdown">
+            {% for parent in parents %}
+                {% if loop.index == 1 %}
+            <option class="menu-custom-parent" id="parent{{ loop.index }}" data-url="{{ parent.url }}">{{ parent.title }}</option>
+                {% else %}
+            <option class="menu-custom-parent" id="parent{{ loop.index }}" data-url="{{ parent.url }}">{{ parent.title }}</option>
+                {% endif %}
+            {% endfor %}
+
+        </select>
+    </div>
+    <div class="menu-custom-child-wrapper">
+        {% for child in childrens %}
+            {% if loop.index == 1 %}
+                <ul id="sub-parent{{ loop.index }}" class="">
+            {% else %}
+                <ul id="sub-parent{{ loop.index }}">
+            {% endif %}
+                {% for c in child %}
+                    <li class="menu-custom-child" id="child{{ loop.index }}"><a href="{{ c.url }}">{{ c.title }}</a></li>
+                {% endfor %}
+            </ul>
+
+        {% endfor %}
+    </div>
+</div>
