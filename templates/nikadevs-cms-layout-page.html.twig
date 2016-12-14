@@ -1,0 +1,65 @@
+{% for id, row in layout.rows %}
+
+    {# {% if row.settings.tag is defined and not row.settings.tag == 'none' %}
+        {{'in here'}}
+        {% set tag = row.settings.tag %}
+        }
+    {% endif %} #}
+
+    {% if row.settings.tag %}
+        <{{ row.settings.tag }} class="{{ row.wrap.attributes.class|join(' ') }}" style="{{ row.wrap.attributes.style }}">
+    {% endif %}
+
+    {% if row.settings.prefix is defined and row.settings.prefix %}
+        {{ row.settings.prefix }}
+    {% endif %}
+
+    {% if row.settings.full_width is defined and row.settings.full_width %}
+        {% set container_class = '-fluid' %}
+    {% endif %}
+
+
+    <div class="container{{ container_class }}">
+
+        <div id="{{ row.attributes.id }}" class="{{ row.attributes.class|join(' ') }} {{ row.settings.class|join(' ') }}">
+
+            {% for region_key, region in layout.regions %}
+
+            {% if id == region.row_id and region.content is not empty %}
+
+            {% if region.settings.tag %}
+                <{{ region.settings.tag }} id="{{ region.attributes.id }}" class="{{ region.attributes.class|join(' ') }}" style="{{ region.attributes.style }}">
+            {% endif %}
+
+            {% if region.settings.prefix %}
+                {{ region.settings.prefix }}
+            {% endif %}
+
+            {{ region.content }}
+
+            {% if region.settings.suffix %}
+                {{ region.settings.suffix }}
+            {% endif %}
+
+            {% if region.settings.tag %}
+        </{{ region.settings.tag }}>
+        {% endif %}
+
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    </div>
+
+    {#{% if row.settings.suffix is defined and row.settings.suffix %}#}
+    {#{{ row.settings.prefix }}#}
+    {#{% endif %}#}
+
+    {% if row.settings.tag %}
+    </{{ row.settings.tag }}>
+    {% endif %}
+
+{% endfor %}
