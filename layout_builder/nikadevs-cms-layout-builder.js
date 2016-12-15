@@ -5,7 +5,6 @@
 
 (function ($, Drupal, drupalSettings) {
 
-    console.log(drupalSettings);
 
     jQuery.fn.outerHTML = function () {
         return jQuery('<div />').append(this.eq(0).clone()).html();
@@ -19,15 +18,13 @@
     // });
 
     var active_layout = $('.layouts .active').attr('id');
-    //console.log(active_layout);
+
 
     function update_layout(op) {
         // Going throught active layout to save all settings
 
         var varthis;
 
-        console.log('in update layout');
-        console.log(drupalSettings);
 
         varthis = $('.layout.active');
         var settings = drupalSettings.nikadevs_cms.layouts[active_layout];
@@ -40,11 +37,6 @@
         };
 
 
-        console.log(settings);
-
-        console.log('inital layout');
-        console.log(layout);
-
         // Save rows settings
         varthis.find('.row').each(function () {
             var id = $(this).attr('id');
@@ -56,13 +48,11 @@
         });
 
 
-        console.log(layout);
-        console.log('outside update func');
 
         // Save regions settings
         varthis.find('.col').each(function () {
             if ($(this).closest('.row').attr('id') != 'id-0') {
-                console.log("inside lopp this");
+
                 var id = $(this).attr('id');
                 layout['regions'][id] = {
                     'row_id': $(this).closest('.row').attr('id'),
@@ -73,13 +63,11 @@
             }
         });
 
-        console.log(layout);
-        console.log('after col each');
 
 
         // Send settings to server for saving
         $('#layout-settings').addClass('fa-spin');
-        $.post('/nikadevs_cms/layout_builder/update', {
+        $.post(drupalSettings.path.baseUrl+'nikadevs_cms/layout_builder/update', {
             'layout': layout,
             'id': active_layout,
             'op': op
@@ -93,7 +81,6 @@
         });
     }
 
-    //console.log(settings+'after post blah');
 
     function attributes(varthis) {
         // Collect all attributes and remove not required
@@ -129,20 +116,16 @@
             delay: 150,
             placeholder: '<div class = "layout-builder-row-placeholder"></div>',
             isValidTarget: function (item, container) {
-                //console.log(item.is(".row") && container.el.is('.layout'));
-                console.log(container);
+
 
                 if (item.is(".row") && container.el.is('.layout') || item.is(".col") && container.el.is('.sortable-parent')) {
-                  console.log('its vaid');
                 return true;
                 }
                 else {
-                  console.log('its not vaid');
                   return false;
                 }
             },
             onDrop: function ($item, container, _super, event) {
-                console.log('its droped');
                 update_layout();
                 $item.removeClass("dragged").removeAttr("style");
                 $("body").removeClass("dragging");
@@ -159,7 +142,6 @@
         $('.settings-col').click(col_settings_form);
     }
 
-    console.log(drupalSettings + 'outside uattach hn');
 
     function layout_switch() {
         $('.layouts-links a, .layout').removeClass('active');
@@ -176,7 +158,7 @@
         modal: true,
         buttons: {
             "Save": function () {
-                console.log(drupalSettings + 'inside col');
+
                 col_settings_save();
                 $('.col').removeClass('settings-open');
                 update_layout();
@@ -384,7 +366,7 @@
 
     // Add new Row
     $('#nd_row').click(function () {
-        console.log(drupalSettings + 'inside row');
+
         $("#row-add .input-setting, #row-add input").val('').attr('checked', false);
         $('.dropdown-menu-links-wrap').hide();
         render_row_onepage_settings('');
@@ -403,7 +385,7 @@
         modal: true,
         buttons: {
             "Add": function () {
-                console.log(drupalSettings + 'add it');
+
                 add_row($(this));
             },
             Cancel: function () {
@@ -413,7 +395,7 @@
     });
 
     function add_row(varthis) {
-        console.log(drupalSettings + 'add row');
+
         var new_id = 0, id;
         $('.layout.active .row').each(function () {
             id = parseInt($(this).attr('id').replace('id-', ''));
